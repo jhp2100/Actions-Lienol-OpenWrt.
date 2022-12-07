@@ -66,17 +66,14 @@ jobs:
         [ -e $FEEDS_CONF ] && mv $FEEDS_CONF openwrt/feeds.conf.default
         chmod +x $DIY_P1_SH
         cd openwrt
+        cd package
+        git clone -b 21.02 https://github.com/kenzok78/luci-theme-argonne
+        cd ..
+        
         $GITHUB_WORKSPACE/$DIY_P1_SH
 
     - name: Update feeds
-      run: |
-        cd openwrt && ./scripts/feeds update -a
-        cd feeds/kenzo
-        rm -rf luci-theme-argonne
-        git clone -b 21.02 https://github.com/kenzok78/luci-theme-argonne
-        cd ../..
-        ./scripts/feeds update -a
-        
+      run: cd openwrt && ./scripts/feeds update -a        
     - name: Install feeds
       run: cd openwrt && ./scripts/feeds install -a
 
